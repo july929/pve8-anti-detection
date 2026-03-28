@@ -66,9 +66,9 @@ jobs:
         uses: actions/create-release@v1
         with:
           tag_name: ${{ format('v{0}-pve8', steps.current-time.outputs.formattedTime) }}
-          release_name: ${{ format('v8.x build-{0} for pve8', steps.current-time.outputs.formattedTime) }}
+          release_name: ${{ format('v9.2.0-x build-{0} for pve8', steps.current-time.outputs.formattedTime) }}
           body: |
-            build pve qemu deb form v9.2.0-7 ovmf deb you can download from https://github.com/july929/pve-anti-detection-edk2-firmware-ovmf
+            build pve qemu deb form v9.2.0-x ovmf deb you can download from https://github.com/july929/pve-anti-detection-edk2-firmware-ovmf
           draft: false
           prerelease: false
         env:
