@@ -692,25 +692,52 @@ static void smbios_build_type_37_table(void)
 static void smbios_build_type_29_table(void)
 {
     SMBIOS_BUILD_TABLE_PRE(29, T29_BASE, true); /* required */
-	SMBIOS_TABLE_SET_STR(29, description,"lixiaoliu Electrical");
+	SMBIOS_TABLE_SET_STR(29, description,"Electrical");
     SMBIOS_BUILD_TABLE_POST;
 }
 
-/* SMBIOS type 39 SystemPowerSupply （这个没有写完） 李晓流 dds666 added*/
-//https://www.dmtf.org/sites/default/files/standards/documents/DSP0134_3.8.0WIP50.pdf 请使用这个规范文件System Management BIOS (SMBIOS) Reference Specification设置type 39 内部参数信息
 static void smbios_build_type_39_table(void)
 {
     SMBIOS_BUILD_TABLE_PRE(39, T39_BASE, true); /* required */
-	SMBIOS_TABLE_SET_STR(39, device_name,"lixiaoliu PowerSupply");
+
+    // 字符串字段
+    SMBIOS_TABLE_SET_STR(39, power_unit_group, "1");
+    SMBIOS_TABLE_SET_STR(39, location, "Internal Chassis");
+    SMBIOS_TABLE_SET_STR(39, device_name, "ASUS PowerSupply");
+    SMBIOS_TABLE_SET_STR(39, manufacturer, "ASUS");
+    SMBIOS_TABLE_SET_STR(39, serial_number, "1234567890");
+    SMBIOS_TABLE_SET_STR(39, asset_tag, "PS-001");
+    SMBIOS_TABLE_SET_STR(39, model, "ROG-STRIX-850W");
+
+    // 数值字段（请根据实际电源调整）
+    t->characteristics = 0x01;         // 例如：0x01 = 在线供电
+    t->input_voltage_range_handle = 0xFFFF; // 无关联句柄
+    t->power_supply_capacity = 850;    // 850 瓦特
+    t->max_power_capacity = 850;       // 最大功率
+    t->oem_defined = 0x0000;
+
     SMBIOS_BUILD_TABLE_POST;
 }
+
+
 
 /* SMBIOS type 22 PortableBattery （这个没有写完） 李晓流 dds666 added*/
 //https://www.dmtf.org/sites/default/files/standards/documents/DSP0134_3.8.0WIP50.pdf 请使用这个规范文件System Management BIOS (SMBIOS) Reference Specification设置type 22 内部参数信息
 static void smbios_build_type_22_table(void)
 {
     SMBIOS_BUILD_TABLE_PRE(22, T22_BASE, true); /* required */
-	SMBIOS_TABLE_SET_STR(22, device_name,"lixiaoliu Battery");
+	SMBIOS_TABLE_SET_STR(22, location,"in the back");
+	SMBIOS_TABLE_SET_STR(22, manufacturer,"Samsung");
+	SMBIOS_TABLE_SET_STR(22, manufacturer_date,"12/12/2024");
+	SMBIOS_TABLE_SET_STR(22, serial_number,"SD123456789AB");
+	SMBIOS_TABLE_SET_STR(22, device_name,"Battery");
+	t->device_chemistry=0x6;//lion
+	t->design_capacity=cpu_to_le16(0xECF4);// 60660(0xECF4) x 1(0x1)= 60660mWh
+	t->design_voltage=cpu_to_le16(0x2EE0); //12 v 
+	t->sbds_version_number=0x0; 
+	t->maximum_error_in_battery_data=0x1;
+	t->design_capacity_multiplier=0x1;//
+	t->oem_specific=cpu_to_le32(0x60666);
     SMBIOS_BUILD_TABLE_POST;
 }
 #define T16_BASE 0x1000
