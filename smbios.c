@@ -1295,15 +1295,10 @@ static bool smbios_get_tables_ep(MachineState *ms,
 	t->associativity=0x9; 12-way Set-Associative
 	*/
 	unsigned cores_per_socket = machine_topo_get_cores_per_socket(ms);
-	smbios_build_type_7_table(0,"L1 Cache",0x180,cores_per_socket*0x20,0x4,0x4,0x7); //李晓流 dds666 added 设置1级数据缓存，每个核心32kb
-	smbios_build_type_7_table(1,"L1 Cache",0x180,cores_per_socket*0x20,0x4,0x3,0x7); //李晓流 dds666 added 设置1级指令缓存，每个核心32kb
-	smbios_build_type_7_table(2,"L2 Cache",0x181,cores_per_socket*0x800,0x5,0x4,0x8); //李晓流 dds666 added 设置2级数据缓存，每个核心2m
-	smbios_build_type_7_table(3,"L2 Cache",0x181,cores_per_socket*0x800,0x5,0x3,0x8); //李晓流 dds666 added 设置2级指令缓存，每个核心2m
-	smbios_build_type_7_table(4,"L3 Cache",0x182,0x2000,0x6,0x5,0x8); //李晓流 dds666 added 设置3级Unified缓存，8M
-	smbios_build_type_7_table(5,"L3 Cache",0x182,0x2000,0x6,0x5,0x8); //李晓流 dds666 added 设置3级Unified缓存，8M
-	smbios_build_type_7_table(6,"lixiaoliu L4 Cache",0x183,0x4000,0x6,0x5,0x1); //李晓流 dds666 added 设置4级Unified缓存，16M
-
-
+	smbios_build_type_7_table(0,"L1 Cache",0x180,cores_per_socket*0x20,0x4,0x5,0x7);
+	smbios_build_type_7_table(1,"L2 Cache",0x181,cores_per_socket*0x200,0x5,0x5,0x8); 
+	smbios_build_type_7_table(2,"L3 Cache",0x182,0x4000,0x6,0x5,0x8); 
+	
     smbios_build_type_8_table();
     smbios_build_type_9_table(errp);
     smbios_build_type_11_table();
@@ -1349,35 +1344,19 @@ static bool smbios_get_tables_ep(MachineState *ms,
 	//https://www.dmtf.org/sites/default/files/standards/documents/DSP0134_3.8.0WIP50.pdf 请使用这个规范文件System Management BIOS (SMBIOS) Reference Specification设置type 26 内部参数信息
 	smbios_build_type_26_table(0,"LM78A",0x6A);//李晓流 dds666 added
 	smbios_build_type_26_table(1,"LM78A",0x67);//李晓流 dds666 added
-	smbios_build_type_26_table(2,"dds666",0x63);//李晓流 dds666 added
-	smbios_build_type_26_table(3,"dds666",0x64);//李晓流 dds666 added
-	smbios_build_type_26_table(4,"lixiaoliu",0x63);//李晓流 dds666 added
-	smbios_build_type_26_table(5,"lixiaoliu",0x64);//李晓流 dds666 added
-	smbios_build_type_26_table(6,"lixiaoliu",0x6A);//李晓流 dds666 added
-	smbios_build_type_26_table(7,"lixiaoliu",0x67);//李晓流 dds666 added
 
 	//李晓流 dds666 added CoolingDevice 
 	//(unsigned instance,const char *description,uint8_t device_type_and_status) t->device_type_and_status = 0x67; //Power Supply Fan |  Ok   0x67=b01100111
 	//https://www.dmtf.org/sites/default/files/standards/documents/DSP0134_3.8.0WIP50.pdf 请使用这个规范文件System Management BIOS (SMBIOS) Reference Specification设置type 27 内部参数信息
 	smbios_build_type_27_table(0,"CPU FAN",0x67);//李晓流 dds666 added
-	smbios_build_type_27_table(1,"dds666",0x65);//李晓流 dds666 added
-	smbios_build_type_27_table(2,"dds666",0x63);//李晓流 dds666 added
-	smbios_build_type_27_table(3,"lixiaoliu",0x65);//李晓流 dds666 added
-	smbios_build_type_27_table(4,"lixiaoliu",0x63);//李晓流 dds666 added
-	smbios_build_type_27_table(5,"lixiaoliu",0x67);//李晓流 dds666 added
+
 
 	//李晓流 dds666 added TemperatureProbe 
 	//unsigned instance,const char *description,uint8_t location_and_status) t->location_and_status=0x6A;
 	//https://www.dmtf.org/sites/default/files/standards/documents/DSP0134_3.8.0WIP50.pdf 请使用这个规范文件System Management BIOS (SMBIOS) Reference Specification设置type 28 内部参数信息
-	smbios_build_type_28_table(0,"LM78A",0x63);//李晓流 dds666 added
-	smbios_build_type_28_table(1,"LM78A",0x6A);//李晓流 dds666 added
-	smbios_build_type_28_table(2,"dds666",0x67);//李晓流 dds666 added
-	smbios_build_type_28_table(3,"lixiaoliu",0x67);//李晓流 dds666 added
-	smbios_build_type_28_table(4,"lixiaoliu",0x69);//李晓流 dds666 added
-	smbios_build_type_28_table(5,"lixiaoliu",0x63);//李晓流 dds666 added
-	smbios_build_type_28_table(6,"lixiaoliu",0x6A);//李晓流 dds666 added
-	smbios_build_type_29_table();//李晓流 dds666 added ElectricalCurrentProbe
-
+	smbios_build_type_28_table(0,"LM78A",0x63);
+	smbios_build_type_28_table(1,"LM78A",0x6A);
+	smbios_build_type_29_table();
 
 
 
