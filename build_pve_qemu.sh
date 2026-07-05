@@ -9,6 +9,10 @@ apt install devscripts -y
 mk-build-deps --install
 make
 make clean
+cp ../ACPI-SMBIOS.patch qemu/
+cd qemu
+patch -p1 < ACPI-SMBIOS.patch
+cd ..
 cp ../sedPatch-pve8-anti-dection.sh qemu/
 cd qemu
 chmod +x sedPatch-pve8-anti-dection.sh
